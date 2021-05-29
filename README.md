@@ -5,8 +5,7 @@
 #### 버킷 만들기
 콘솔 이용하면 쉬움
 
-#### Lambda 만들기
-- 함수 생성 -> 블루프린트 사용 체크 -> hello-world-python 검색 후 체크 후 구성 -> 이름 지정 후 함수 생성
+
 
 #### layer를 이용해 Python 모듈을 AWSlambda 내에 import하는 법
 ```
@@ -31,11 +30,70 @@ zip -r layer_pandas.zip .
 - lambda 함수의 기본 제한시간은 3초이지만, 큰 파일을 df로 생성하는 경우 많은 시간이 필요하다. 따라서 제한시간을 20초로 늘린다.
     - 구성 -> 일반구성 -> 편집 -> 제한 시간 -> 20초
 - df를 sql로 저장하는 경우 더욱 큰 시간이 필요하다 제한시간을 최대로 늘린다.
+#### IAM 
+##### 계정생성
+##### AWS init
 
 #### Lambda
-* cli 환경에서 lambda 함수 배포
+##### 웹 콘솔에서 Lambda 만들기
+    - 함수 생성 -> 블루프린트 사용 체크 -> hello-world-python 검색 후 체크 후 구성 -> 이름 지정 후 함수 생성
+##### cli 환경에서 lambda 함수 배포
 
-* read excel 활용 예시
+* 현재 aws 버전 체크
+```
+$ aws --version 
+```
+* AWS 리소스에 액세스할 수 있는 권한을 제공하는 실행 역할 생성
+```
+$ aws iam create-role --role-name lambda-ex --assume-role-policy-document file://trust-policy.json
+또는
+$ aws iam create-role --role-name lambda-ex --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
+```
+
+* 역할에 권한 추가
+```
+$ aws iam attach-role-policy --role-name lambda-ex --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+```
+
+* test 함수 생성
+```
+# test.py
+import json
+
+print('Loading function')
+
+
+def lambda_handler(event, context):
+    #print("Received event: " + json.dumps(event, indent=2))
+    res = "test complete !! your value = " + event['key'] + "\n"
+    return res  # Echo back the first key value
+
+```
+* 배포 패키지 생성
+```
+$ zip test.zip test.py
+```
+
+* lambda 함수 생성 및 배포
+```
+$ aws lambda create-function --function-name test-function \
+--zip-file fileb://test.zip --handler test.lambda_handler --runtime python3.8 \
+--role arn:aws:iam::638435461849:role/tester-ROLE
+```
+
+* lambda 함수 사용 테스트
+```
+// 함수 실행 후 받은 응답 내용을 test_out에 저장
+$ aws lambda invoke --function-name test-function --payload '{"key": "seongho"}' test_out --log-type Tail
+
+$ cat test_out 
+```
+
+
+
+
+
+##### read excel 활용 예시
 ```
 import json
 import pandas as pd
@@ -120,6 +178,7 @@ def lambda_handler(event, context):
     # return parsed 
     
 ```
+
 
 
 #### 파일의 액세스 권한 설정
