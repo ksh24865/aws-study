@@ -88,9 +88,20 @@ $ aws lambda invoke --function-name test-function --payload '{"key": "seongho"}'
 
 $ cat test_out 
 ```
+* 계정의 Lambda 함수 목록 표시
+```
+$ aws lambda list-functions --max-items 10
+```
 
+* 함수 이름으로 Lambda 함수 조회
+```
+$ aws lambda get-function --function-name test-function
+```
 
-
+* Lambda 함수 삭제
+```
+$ aws lambda delete-function --function-name test-function
+```
 
 
 ##### read excel 활용 예시
