@@ -29,8 +29,11 @@ zip -r layer_pandas.zip .
     - 구성 -> 일반구성 -> 편집 -> 제한 시간 -> 20초
 - df를 sql로 저장하는 경우 더욱 큰 시간이 필요하다 제한시간을 최대로 늘린다.
 #### IAM 
+todo
 ##### 계정생성
+todo
 ##### AWS init
+todo
 
 #### Lambda
 ##### 웹 콘솔에서 Lambda 만들기
