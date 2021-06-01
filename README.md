@@ -313,7 +313,7 @@ def lambda_handler(event, context):
                     'InstanceCount': 4
                 }],
             'Ec2KeyName': 'seongho', # 본인의 Ec2KeyName
-            'KeepJobFlowAliveWhenNoSteps': False,
+            'KeepJobFlowAliveWhenNoSteps': False, #  단계가 없거나 종료되면 EMR이 유지되지 않고 역시 자동 종료됨.
             'TerminationProtected': False,
             'Ec2SubnetId': 'subnet-2df64d46'#, #본인의 Ec2SubnetId
             #'AdditionalMasterSecurityGroups': [
@@ -330,7 +330,7 @@ def lambda_handler(event, context):
         # Spark 단계 추가
         Steps=[{
             'Name': 'Main',
-            'ActionOnFailure': 'TERMINATE_CLUSTER',
+            'ActionOnFailure': 'TERMINATE_CLUSTER', # 단계를 실행하다가 실패할 경우에는 TERMINATE_CLUSTER 옵션을 통해서 EMR을 즉시 종료
             'HadoopJarStep': {
                 'Jar': 'command-runner.jar',
                 'Args': ['spark-submit',
