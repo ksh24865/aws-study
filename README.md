@@ -144,7 +144,8 @@ $ aws lambda delete-function --function-name test-function
 ##### Lambda Layer
 
 ```
-aws lambda publish-layer-version --layer-name my-layer --description "My layer" --content S3Bucket=https://laplace-test.s3.us-east-2.amazonaws.com,S3Key=module/layers.zip --compatible-runtimes python3.6 python3.7 python3.8
+aws lambda publish-layer-version --layer-name my-layer --description "My layer" --content S3Bucket=laplace-test,S3Key=module/layers.zip --compatible-runtimes python3.6 python3.7 python3.8
+
 ```
 
 ##### read excel 활용 예시
