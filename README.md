@@ -313,7 +313,7 @@ def lambda_handler(event, context):
                     'InstanceCount': 4
                 }],
             'Ec2KeyName': 'seongho', # 본인의 Ec2KeyName
-            'KeepJobFlowAliveWhenNoSteps': False, #  단계가 없거나 종료되면 EMR이 유지되지 않고 역시 자동 종료됨.
+            'KeepJobFlowAliveWhenNoSteps': False, #  단계가 없거나 종료되면 EMR이 유지되지 않고 역시 자동 종료됨. 약 7분 정도 실행되는 듯
             'TerminationProtected': False,
             'Ec2SubnetId': 'subnet-2df64d46'#, #본인의 Ec2SubnetId
             #'AdditionalMasterSecurityGroups': [
