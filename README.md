@@ -48,18 +48,17 @@ todo
     * 그룹 만들기
 
 #### AWS init
-todo 
 ##### Install
 * install
 ```
+$ sudo apt  install awscli
+//또는
 $ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 $ unzip awscliv2.zip
 $ sudo ./aws/install
-또는
-$ sudo apt  install awscli
 
 $ aws --version //설치확인
-
+// aws-cli/1.18.69 Python/3.8.5 Linux/5.4.0-73-generic botocore/1.16.19
 ```
 * aws configure
 ```
@@ -69,7 +68,11 @@ AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY // 생성
 Default region name [None]: us-east-2 // lambda 및 s3 등의 region
 Default output format [None]:  // 공백
 ```
-
+#### s3
+* s3 목록 확인 
+```
+$ aws s3 ls
+```
 
 
 #### Lambda
@@ -98,13 +101,10 @@ $ aws iam attach-role-policy --role-name lambda-ex --policy-arn arn:aws:iam::aws
 # test.py
 import json
 
-print('Loading function')
-
-
 def lambda_handler(event, context):
     #print("Received event: " + json.dumps(event, indent=2))
-    res = "test complete !! your value = " + event['key'] + "\n"
-    return res  # Echo back the first key value
+    res = "test complete !! your value = " + event['key'] 
+    return res  # 테스트 코드
 
 ```
 * 배포 패키지 생성
@@ -117,6 +117,7 @@ $ zip test.zip test.py
 $ aws lambda create-function --function-name test-function \
 --zip-file fileb://test.zip --handler test.lambda_handler --runtime python3.8 \
 --role arn:aws:iam::638435461849:role/tester-ROLE
+// 람다 함수 이름은 고유한 값으로 변경
 ```
 
 * lambda 함수 사용 테스트
@@ -140,7 +141,11 @@ $ aws lambda get-function --function-name test-function
 ```
 $ aws lambda delete-function --function-name test-function
 ```
+##### Lambda Layer
 
+```
+aws lambda publish-layer-version --layer-name my-layer --description "My layer" --content S3Bucket=https://laplace-test.s3.us-east-2.amazonaws.com,S3Key=module/layers.zip --compatible-runtimes python3.6 python3.7 python3.8
+```
 
 ##### read excel 활용 예시
 ```
