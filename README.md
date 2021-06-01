@@ -142,10 +142,15 @@ $ aws lambda get-function --function-name test-function
 $ aws lambda delete-function --function-name test-function
 ```
 ##### Lambda Layer
-
+* layer 생성
 ```
-aws lambda publish-layer-version --layer-name my-layer --description "My layer" --content S3Bucket=laplace-test,S3Key=module/layers.zip --compatible-runtimes python3.6 python3.7 python3.8
-
+aws lambda publish-layer-version --layer-name my-layer --description "My layer"\
+--content S3Bucket=laplace-test,S3Key=module/layers.zip --compatible-runtimes python3.6 python3.7 python3.8
+```
+* lambda에 layer 적용
+```
+aws lambda update-function-configuration --function-name test-function \
+--layers arn:aws:lambda:us-east-2:638435461849:layer:my-layer:1
 ```
 
 ##### read excel 활용 예시
@@ -250,7 +255,7 @@ def lambda_handler(event, context):
 - Amazon S3 -> Bucket -> file클릭 -> 권한 -> ACL(액세스 제어 목록) -> 편집 -> 전부 체크
 - Bucket -> 권한 -> 퍼블릭 액세스 차단 편집(버킷 설정) -> 전부
 
-#### S3 메소드
+#### S3 python 메소드
 ##### import
 * import boto3
 * s3 = boto3.client('s3') #  S3 Client 생성
