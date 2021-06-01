@@ -277,6 +277,7 @@ def lambda_handler(event, context):
 * Launch a Spark job in a transient EMR cluster using a Lambda function (todo)
 * https://docs.aws.amazon.com/ko_kr/prescriptive-guidance/latest/patterns/launch-a-spark-job-in-a-transient-emr-cluster-using-a-lambda-function.html
 ##### lmabda로 emr 실행
+* emr 실행 lambda
 ```
 #test_emr.py
 
@@ -311,7 +312,7 @@ def lambda_handler(event, context):
                     'InstanceType': 'r3.xlarge',
                     'InstanceCount': 4
                 }],
-            'Ec2KeyName': 'seongho',
+            'Ec2KeyName': 'seongho', # 본인의 Ec2KeyName
             'KeepJobFlowAliveWhenNoSteps': False,
             'TerminationProtected': False,
             'Ec2SubnetId': 'subnet-2df64d46'#, #본인의 Ec2SubnetId
@@ -324,7 +325,22 @@ def lambda_handler(event, context):
         }],
         VisibleToAllUsers=False,
         JobFlowRole='EMR_EC2_DefaultRole',
-        ServiceRole='EMR_DefaultRole'
+        ServiceRole='EMR_DefaultRole'#,
+        '''
+        # Spark 단계 추가
+        Steps=[{
+            'Name': 'Main',
+            'ActionOnFailure': 'TERMINATE_CLUSTER',
+            'HadoopJarStep': {
+                'Jar': 'command-runner.jar',
+                'Args': ['spark-submit',
+                    '--master', 'yarn', '--deploy-mode', 'client',
+                    '--class', 'main class',
+                    's3://bucket-name/folder/file.jar'
+                ]
+            }
+        }]
+        '''
     )
     return response
 ```
