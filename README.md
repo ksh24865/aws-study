@@ -273,7 +273,61 @@ def lambda_handler(event, context):
     
 ```
 
+#### EMR
+* Launch a Spark job in a transient EMR cluster using a Lambda function (todo)
+* https://docs.aws.amazon.com/ko_kr/prescriptive-guidance/latest/patterns/launch-a-spark-job-in-a-transient-emr-cluster-using-a-lambda-function.html
+##### lmabda로 emr 실행
+```
+#test_emr.py
 
+import os
+import boto3
+
+#aws_key = os.environ['AWS_KEY']
+#aws_skey = os.environ['AWS_SKEY']
+
+def lambda_handler(event, context):
+    session = boto3.session.Session(region_name='us-east-2') 
+    #emr_client = session.client('emr', aws_access_key_id = aws_key, aws_secret_access_key = aws_skey)
+    emr_client = session.client('emr')
+    
+    response = emr_client.run_job_flow(
+        Name='test_emr',
+        LogUri='s3://aws-logs-638435461849-us-east-2/elasticmapreduce/', #본인의 log uri
+        ReleaseLabel='emr-5.21.0',
+        Instances={
+            'InstanceGroups': [
+                {
+                    'Name': 'master',
+                    'Market': 'SPOT',
+                    'InstanceRole': 'MASTER',
+                    'InstanceType': 'm4.large',
+                    'InstanceCount': 1
+                },
+                {
+                    'Name': 'slave',
+                    'Market': 'SPOT',
+                    'InstanceRole': 'CORE',
+                    'InstanceType': 'r3.xlarge',
+                    'InstanceCount': 4
+                }],
+            'Ec2KeyName': 'seongho',
+            'KeepJobFlowAliveWhenNoSteps': False,
+            'TerminationProtected': False,
+            'Ec2SubnetId': 'subnet-2df64d46'#, #본인의 Ec2SubnetId
+            #'AdditionalMasterSecurityGroups': [
+            #    '<additional security group ID>'
+            #]
+        },
+        Applications=[{
+            'Name': 'Spark'
+        }],
+        VisibleToAllUsers=False,
+        JobFlowRole='EMR_EC2_DefaultRole',
+        ServiceRole='EMR_DefaultRole'
+    )
+    return response
+```
 
 #### 파일의 액세스 권한 설정
 - 1(안전).
