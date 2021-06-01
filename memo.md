@@ -198,8 +198,6 @@ $cat test_out
 
 - result
 
-    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/93debbbb-9349-4cfe-aad2-24278038fee8/test_pandas.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/93debbbb-9349-4cfe-aad2-24278038fee8/test_pandas.jpg)
-
     ### AWS EMR을 lambda 사용해서 구동
 
     - 개발환경
@@ -278,4 +276,4 @@ $cat test_out
 
         - result
 
-    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5e1f1b9c-e099-48f3-b420-7666b3115576/emr.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5e1f1b9c-e099-48f3-b420-7666b3115576/emr.png)
+
