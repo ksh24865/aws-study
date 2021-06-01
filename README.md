@@ -1,4 +1,5 @@
 # aws-study
+우분투 20.04 기준 작성 (추후 mac 기준 추가 예정)
 
 #### 버킷 만들기
 콘솔 이용하면 쉬움
@@ -31,9 +32,45 @@ zip -r layer_pandas.zip .
 #### IAM 
 todo
 ##### 계정생성
-todo
-##### AWS init
-todo
+* https://console.aws.amazon.com/iam/ 접속 - 사용자 - 사용자 추가
+* 사용자 추가
+    * 사용자 이름 설정
+    * AWS 액세스 유형 
+        * 프로그래밍 방식 액세스 설정
+    * 권한설정 
+        * 그룹에 사용자 추가 후 그룹 설정 (그룹 추가 확인)
+    * 사용자 만들기
+        * 성공 후 액세스 키 ID 및 비밀 액세스 키 기록
+
+* 그룹 추가
+    * 그룹 이름 지정
+    * `AmazonS3FullAccess`, `AWSLambda_FullAccess` 권한 추가
+    * 그룹 만들기
+
+#### AWS init
+todo 
+##### Install
+* install
+```
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+$ unzip awscliv2.zip
+$ sudo ./aws/install
+또는
+$ sudo apt  install awscli
+
+$ aws --version //설치확인
+
+```
+* aws configure
+```
+$ aws configure
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE // 생성한 사용자 액세스 키 ID
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY // 생성한 사용자 비밀 액세스 키
+Default region name [None]: us-east-2 // lambda 및 s3 등의 region
+Default output format [None]:  // 공백
+```
+
+
 
 #### Lambda
 ##### 웹 콘솔에서 Lambda 만들기
