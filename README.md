@@ -35,7 +35,6 @@ zip -r layer_pandas.zip .
 aws lambda update-function-configuration --function-name test-function --timeout 60
 ```
 #### IAM 
-todo
 ##### 계정생성
 * https://console.aws.amazon.com/iam/ 접속 - 사용자 - 사용자 추가
 * 사용자 추가
