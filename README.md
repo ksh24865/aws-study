@@ -26,9 +26,14 @@ zip -r layer_pandas.zip .
 ```
 
 #### Timeout 늘리는 법
+##### web console
 - lambda 함수의 기본 제한시간은 3초이지만, 큰 파일을 df로 생성하는 경우 많은 시간이 필요하다. 따라서 제한시간을 20초로 늘린다.
     - 구성 -> 일반구성 -> 편집 -> 제한 시간 -> 20초
 - df를 sql로 저장하는 경우 더욱 큰 시간이 필요하다 제한시간을 최대로 늘린다.
+##### cli
+```
+aws lambda update-function-configuration --function-name test-function --timeout 60
+```
 #### IAM 
 todo
 ##### 계정생성
