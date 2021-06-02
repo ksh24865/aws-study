@@ -9,9 +9,13 @@
 
 zip test.zip test.py
 
+echo ==lambda update logs==
 aws lambda update-function-code \
     --function-name  test-function \
     --zip-file fileb://test.zip
 
+echo ==lambda invoke logs==
 aws lambda invoke --function-name test-function --payload '{"key": "seongho"}' test_out 
+
+echo ==lambda result logs==
 cat test_out 
