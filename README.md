@@ -193,6 +193,42 @@ aws lambda update-function-configuration --function-name test-function \
 --layers arn:aws:lambda:us-east-2:638435461849:layer:my-layer:1
 ```
 
+#### git push 이벤트 발생 시 마다 lambda 내용 업데이트
+* Git hooks
+    *  특정 git 이벤트 시점에 특정 script 실행가능
+    *  git push 직전에 업데이트를 해야 하므로 pre-push 이용
+* make pre-push
+```
+$ touch .git/hooks/pre-push
+$ chmod +x .git/hooks/pre-push
+```
+* pre-push
+```
+
+# 함수 마다 매크로 지정해야 함
+echo
+# 배포파일 압축
+zip test.zip test.py 
+
+# lambda update
+echo ==lambda update logs==
+aws lambda update-function-code \
+    --function-name  test-function \
+    --zip-file fileb://test.zip
+
+# lambda run
+echo ==lambda invoke logs==
+aws lambda invoke --function-name test-function --payload '{"key": "seongho"}' test_out 
+
+# print result
+echo ==lambda result logs==
+cat test_out 
+echo
+echo
+```
+
+
+
 ##### read excel 활용 예시
 ```
 import json
