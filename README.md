@@ -170,6 +170,13 @@ $ aws lambda list-functions --max-items 10
 $ aws lambda get-function --function-name test-function
 ```
 
+* Lmabda 함수 업데이트
+```
+$ aws lambda update-function-code \
+    --function-name  my-function \
+    --zip-file fileb://my-function.zip
+```
+
 * Lambda 함수 삭제
 ```
 $ aws lambda delete-function --function-name test-function
