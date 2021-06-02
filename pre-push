@@ -1,7 +1,7 @@
 
 
 # 함수 마다 매크로 지정해야 함
-
+echo
 zip test.zip test.py
 
 echo ==lambda update logs==
@@ -14,4 +14,5 @@ aws lambda invoke --function-name test-function --payload '{"key": "seongho"}' t
 
 echo ==lambda result logs==
 cat test_out 
+echo
 echo
