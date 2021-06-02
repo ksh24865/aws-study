@@ -1,0 +1,17 @@
+#!/bin/sh
+#python3 hi.py # 우리 프로젝트에서는 커밋 전에 grunt 로 린트를 돌리도록 적용했다.
+#if [ $? -ne 0 ]; then
+#  echo "Grunt failed, please fix code and recommit"
+#  exit 1
+#fi
+
+# 함수 마다 매크로 지정해야 함
+
+zip test.zip test.py
+
+aws lambda update-function-code \
+    --function-name  test-function \
+    --zip-file fileb://test.zip
+
+aws lambda invoke --function-name test-function --payload '{"key": "seongho"}' test_out 
+cat test_out 
