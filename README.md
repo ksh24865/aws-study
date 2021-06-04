@@ -477,35 +477,24 @@ AWS의 VPC 콘솔에서 보안그룹을 찾아 클릭
 ```
 
 #### VPC
-* Lambda로 VPC내 RDS에 접근
+##### Lambda로 VPC내 RDS에 접근
+* test_savespl.py
 ```
-
 import json
 import pandas as pd
 import boto3
 import os
 from io import BytesIO
 
-
-import sys
-import logging
-import rds_config
+from sqlalchemy import create_engine
 import pymysql
 
 #rds settings
-rds_host  = "rds-instance-endpoint"
-name = rds_config.db_username
-password = rds_config.db_password
-db_name = rds_config.db_name
+rds_host  = "rdscluster.cluster-c1ijdymnce3n.us-east-2.rds.amazonaws.com" #rds-instance-endpoint
+name = "awsuser"
+password = "awspassword"
+db_name = "superstore"
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-try:
-    conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
-except pymysql.MySQLError as e:
-    logger.error("ERROR: Unexpected error: Could not connect to MySQL instance.")
-    logger.error(e)
     
 s3 = boto3.client('s3') 
 
@@ -520,9 +509,25 @@ def lambda_handler(event, context):
     obj = s3.get_object(Bucket= bucketName, Key= keyName) 
     # pd.read_excel('경로/파일명.xlsx', sheet_name = '시트명')
     df = pd.read_excel(BytesIO(obj['Body'].read()),sheet_name=sheet)
-    df.to_sql(name=sheet, conn=db_connection, if_exists='append',index=False)
+    
+    #save to sql
+    db_connection_str = 'mysql+pymysql://'+name+':'+password+'@'+rds_host+'/'+db_name
+    db_connection = create_engine(db_connection_str)
+    db_connection.connect()
+    #conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
+    
+    df.to_sql(name=sheet, con=db_connection, if_exists='append',index=False)
 ```
+* lmabda 생성
+```
+$ zip test_savespl.zip test_savespl.py
 
+$ aws lambda create-function --function-name  test-labmda-vpc-rds --runtime python3.8 \
+--zip-file fileb://test_savespl.zip --handler test_savespl.handler \
+--role arn:aws:iam::638435461849:role/tester-ROLE \
+--vpc-config SubnetIds=subnet-0a792cb9ce190b1fb,subnet-032c9ad2531b1b1e9,SecurityGroupIds=sg-09f23a0f1e3728121
+#public Subnet의 SubnetId, DB에 접근하기 위한 SecurityGroupId
+```
 
 #### EC
  ```
