@@ -476,6 +476,54 @@ AWS의 VPC 콘솔에서 보안그룹을 찾아 클릭
     
 ```
 
+#### VPC
+* Lambda로 VPC내 RDS에 접근
+```
+
+import json
+import pandas as pd
+import boto3
+import os
+from io import BytesIO
+
+
+import sys
+import logging
+import rds_config
+import pymysql
+
+#rds settings
+rds_host  = "rds-instance-endpoint"
+name = rds_config.db_username
+password = rds_config.db_password
+db_name = rds_config.db_name
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+try:
+    conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
+except pymysql.MySQLError as e:
+    logger.error("ERROR: Unexpected error: Could not connect to MySQL instance.")
+    logger.error(e)
+    
+s3 = boto3.client('s3') 
+
+
+def lambda_handler(event, context):
+
+    # print(obj['Body'])
+    # 버킷, 키, 시트를 테스트 시 event로 받을 수도 있음
+    bucketName = 'laplace-test' 
+    keyName = 'input/superstore.xls'
+    sheet = 'Orders'
+    obj = s3.get_object(Bucket= bucketName, Key= keyName) 
+    # pd.read_excel('경로/파일명.xlsx', sheet_name = '시트명')
+    df = pd.read_excel(BytesIO(obj['Body'].read()),sheet_name=sheet)
+    df.to_sql(name=sheet, conn=db_connection, if_exists='append',index=False)
+```
+
+
 #### EC
  ```
  ssh로 ec에 연결하는 법
