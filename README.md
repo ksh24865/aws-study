@@ -596,5 +596,52 @@ def lambda_handler(event, context):
 ```
 
 EMR에 스파크와 함께 로직을 처리할 파이썬 파일
+- 기본적으로 설정되어있는 경로에 엑셀파일을 읽어오면 그 파일의 Column 이름을 바꿔서 Parquet으로 저장한다
 
+```python
+from pyspark.sql import SparkSession
+from com.crealytics.spark.excel import *
+import argparse
+from pyspark.sql.functions import col
+def change_column_name(input_loc, output_loc):
+		#현재 저장되어있는 엑셀파일을 불러온다.
+    df = spark.read.format("com.crealytics.spark.excel") \
+    .option("useHeader", "true") \
+    .option("inferSchema", "true") \
+    .load(input_loc+"/superstore.xls")
+		#Column name을 바꾼다.
+    df=df.withColumnRenamed("Row ID", "row_id")
+    df=df.withColumnRenamed("Order ID", "order_id")
+    df=df.withColumnRenamed("Order Date", "order_date")
+    df=df.withColumnRenamed("Ship Date", "ship_date")
+    df=df.withColumnRenamed("Ship Mode", "ship_mode")
+    df=df.withColumnRenamed("Customer ID", "customer_id")
+    df=df.withColumnRenamed("Customer Name", "customer_name")
+    df=df.withColumnRenamed("Segment", "segment")
+    df=df.withColumnRenamed("Country", "country")
+    df=df.withColumnRenamed("City", "city")
+    df=df.withColumnRenamed("State", "state")
+    df=df.withColumnRenamed("Postal Code", "postal_code")
+    df=df.withColumnRenamed("Region", "region")
+    df=df.withColumnRenamed("Product ID", "product_id")
+    df=df.withColumnRenamed("Category", "category")
+    df=df.withColumnRenamed("Sub-Category", "subcategory")
+    df=df.withColumnRenamed("Product Name", "product_name")
+    df=df.withColumnRenamed("Sales", "sales")
+    df=df.withColumnRenamed("Quantity", "quantity")
+    df=df.withColumnRenamed("Discount", "discount")
+    df=df.withColumnRenamed("Profit", "profit")
+
+    
+		#다시 Parquet 형태로 저장한다.
+    df.write.mode("overwrite").parquet(output_loc)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", type=str, help="HDFS input", default="/home/hadoop")
+    parser.add_argument("--output", type=str, help="HDFS output", default="/home/hadoop")
+    args = parser.parse_args()
+    spark = SparkSession.builder.appName("Random Text Classifier").config("spark.jars.packages", "com.crealytics:spark-excel_2.12:0.13.7").getOrCreate()
+    change_column_name(input_loc=args.input, output_loc=args.output)
+```
 
