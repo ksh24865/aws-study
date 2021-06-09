@@ -545,3 +545,56 @@ $ aws lambda create-function --function-name  test-labmda-vpc-rds --runtime pyth
 result = (df.head()).to_json(orient="records")
 parsed = json.loads(result)
 ```
+
+#### EMR
+데이터 전처리 및 분석 lambda 구현
+
+## Lambda로 EMR 핸들링
+
+- 서브넷 주소와 Cluster를 만드는 데 필요한 조건을 명시하여 Cluster를 만든 다음 명령어를 입력했다
+
+.
+
+- 이거 할 때 주의 사항이 몇가지가 있는데 EMR 버전이 6.0 이상은 잘 작동하지않고 코드에 명시한 5.3x버전을 기입해야 하고 엑셀파일을 읽는데 필요한 라이브러리인 com.crealytics:spark-excel은 2.11 버전이어야지 작동을 잘 한다. 또한 경로는 절대 경로로 지정 해주어야 하며 하둡하고 스파크가 깔려 있어야한다.
+
+Lambda에 있는 handler 파일
+
+```python
+import sys
+import boto3
+import os
+import awswrangler as wr
+
+def lambda_handler(event, context):
+    subnet = os.environ.get("subnet")
+    s3bucket = os.environ.get("s3bucket")
+    ip_data_bkt = os.environ.get("ip_data_bkt")
+    ip_data_key = os.environ.get("ip_data_key")
+    output_bkt =  os.environ.get("output_bkt")
+    #Cluster의 필요한 조건과 함께 Cluster를 만든다.
+    cluster_id = wr.emr.create_cluster(subnet, key_pair_name = "repair",applications=["Hadoop", "Spark", "Ganglia", "Hive", "Livy"],emr_release="emr-5.33.0")
+    steps = []
+		#해당 파일이 저장되어 있는 S3 파일에서 가져올 수 있게 명령어 
+    #s3-dist-cp와 S3주소 그리고 절대 경로로 지정되어있는 
+		#현재 경로를 설정해서 파일을 복사해 가져온다.
+    cmd1 = "s3-dist-cp --src=s3://"+ip_data_bkt+"/"+ip_data_key+" --dest=/home/hadoop"
+    #s3에 저장되어있는 파이썬 코드와 함께 스파크 실행해 엑셀파일에 대한 정보를 처리한다.
+		cmd2 =  "spark-submit --packages com.crealytics:spark-excel_2.11:0.11.1 s3://"+ip_data_bkt+"/test.py"
+    #처리한 결과물을 S3에 가져온다.
+		cmd3 = "s3-dist-cp --src=/home/hadoop --dest=s3://"+output_bkt+"/clean_data/"
+    cmds = [cmd1, cmd2, cmd3]
+    print(ip_data_bkt)
+		#해당 명령어를 저장한 Step을 배열로 저장하고 Step 리스트로 만들어 실행한다.
+    for cmd in cmds:
+        steps.append(wr.emr.build_step(name="cmd", command=cmd, action_on_failure = "CONTINUE"))
+    step_id = wr.emr.submit_steps(cluster_id=cluster_id, steps =steps)
+		#완료할때까지 기다린다.
+    while wr.emr.get_step_state(cluster_id, step_id[0]) !="COMPLETED":
+        pass
+
+    wr.emr.terminate_cluster(cluster_id)
+```
+
+EMR에 스파크와 함께 로직을 처리할 파이썬 파일
+
+
