@@ -63,12 +63,13 @@ afkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:2181",
 }
 
 <br/>
+
 ```
 ./kafka-console-producer.sh --broker-list "b-1.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2. amazonaws.com:9094,b-2.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094,b-3.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094" --producer.config client.properties --topic AWSKafkaTutorialTopic
 
 ./kafka-console-consumer.sh --bootstrap-server "b-1.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094,b-2.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094,b-3.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094" --consumer.config client.properties --topic AWSKafkaTutorialTopic --from-beginning
-
 ```
+
 <br/>
 
 https://aws.amazon.com/ko/blogs/big-data/govern-how-your-clients-interact-with-apache-kafka-using-api-gateway/
