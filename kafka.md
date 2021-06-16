@@ -1,3 +1,7 @@
+
+https://docs.aws.amazon.com/ko_kr/msk/latest/developerguide/create-vpc.html
+<br/>
+
 {
     "ClusterInfo": {
         "EncryptionInfo": {
@@ -59,3 +63,6 @@ afkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:2181",
 amazonaws.com:9094,b-2.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:
 9094,b-3.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094"
 }
+
+<br/>
+
