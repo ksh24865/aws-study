@@ -77,4 +77,5 @@ https://aws.amazon.com/ko/blogs/big-data/govern-how-your-clients-interact-with-a
 https://docs.confluent.io/3.0.0/kafka-rest/docs/index.html
 
 <br/>
-confluent-5.3.1
+confluent-6.2.0
+curl -O http://packages.confluent.io/archive/6.2/confluent-6.2.0.tar.gz
