@@ -51,3 +51,11 @@ afkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:2181",
         }
     }
 }
+
+
+<br/>
+{
+    "BootstrapBrokerStringTls": "b-1.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.
+amazonaws.com:9094,b-2.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:
+9094,b-3.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaws.com:9094"
+}
