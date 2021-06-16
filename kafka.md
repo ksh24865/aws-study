@@ -66,3 +66,6 @@ amazonaws.com:9094,b-2.awskafkatutorialcluste.1y8759.c3.kafka.us-east-2.amazonaw
 
 <br/>
 
+https://aws.amazon.com/ko/blogs/big-data/govern-how-your-clients-interact-with-apache-kafka-using-api-gateway/
+<br/>
+https://docs.confluent.io/3.0.0/kafka-rest/docs/index.html
