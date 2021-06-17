@@ -141,7 +141,8 @@ def lambda_handler(event, context):
     for data in response["Records"]:
         if data is None:
             break;
-        res.append(data['Data'].decode())
+        #print(data['Data'].decode())
+        res.append(data['Data'])
 
     return {
         'statusCode': 200,
