@@ -80,11 +80,11 @@ wget https://archive.apache.org/dist/kafka/2.6.1/kafka_2.13-2.6.1.tgz
 
 - postman을 사용하여 테스트(테스트 목적으로 짧은 메세지 POST)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a034a9c9-d7fe-415d-97ac-427e45e30ecf/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a034a9c9-d7fe-415d-97ac-427e45e30ecf/Untitled.png)
-
+![Untitled (4)](https://user-images.githubusercontent.com/55729930/122361399-2a7de280-cf92-11eb-96c8-e8b47352603c.png)
 - Kafka consumer에서 결과 확인
 
-    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/88543ac4-6eae-4ed7-948d-65687e79b95d/_2021-06-17__1.50.37.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/88543ac4-6eae-4ed7-948d-65687e79b95d/_2021-06-17__1.50.37.png)
+<img width="738" alt="_2021-06-17__1 50 37" src="https://user-images.githubusercontent.com/55729930/122361689-73359b80-cf92-11eb-8290-1f161e89c043.png">
+
 
 ---
 
