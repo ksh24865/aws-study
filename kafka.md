@@ -1,3 +1,93 @@
+## Amazon MSK
+
+쇼핑몰 APP에서 웹 훅이 실행될 때마다 Amazon MSK에 적재하는 데이터 스트리밍 데모
+
+### 개요
+
+쇼핑몰 APP에서 웹 훅 발생 시 이벤트 발생 정보를 API Gateway로 POST 전송한다.
+
+API Gateway를 통해 해당 POST명령은 VPC내의 Kafka-REST client로 전송된다.
+
+Kafka-REST client는 전송받은 메시지를 Kafka Cluster에 적재한다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8528535e-ce13-4f2d-bdd1-5f477b6317b9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8528535e-ce13-4f2d-bdd1-5f477b6317b9/Untitled.png)
+
+### MSK 클러스터 생성
+
+[https://docs.aws.amazon.com/ko_kr/msk/latest/developerguide/getting-started.html](https://docs.aws.amazon.com/ko_kr/msk/latest/developerguide/getting-started.html)
+
+상단 링크접속 후 튜토리얼의 5단계(토픽 생성)까지만 진행한다.
+
+### Kafka REST 프록시 구성
+
+1. 사전준비
+- 아래 명령어를 통해 BootstrapBrokerString을 얻는다.
+
+```bash
+aws kafka get-bootstrap-brokers --region <본인region> --cluster-arn <카프카 클러스터 arn>
+```
+
+- BootstrapBrokerString과 MSK 클러스터 생성 단계에서 얻었던 ZooKeeperConnectionString을 기록해둔다.
+
+2. Kafka 클라이언트 Amazon EC2 인스턴스에 (ssh 등)연결
+
+3. Kafka-REST client 설치
+
+- confluent 설치
+    - REST-API로 동작이 가능한 Kafka client라고 보면 됨.
+
+```bash
+curl -O [http://packages.confluent.io/archive/6.2/confluent-6.2.0.tar.gz](http://packages.confluent.io/archive/6.2/confluent-6.2.0.tar.gz)
+```
+
+- kafka client 설치
+    - 실제 스트리밍 서비스 시에는 필요 없음 (confluent가 client기능 수행)
+    - 본 데모에서는 consumer를 통해 Kafka에 적재된 데이터를 확인하기 위해 사용
+
+```bash
+wget https://archive.apache.org/dist/kafka/2.6.1/kafka_2.13-2.6.1.tgz
+```
+
+4. Kafka REST 서버와 Amazon MSK 클러스터 연결
+
+- [kafka-rest.properties](http://kafka-rest.properties) 설정
+
+    ```bash
+    vi /home/ec2-user/confluent-6.2.0/etc/kafka-rest/kafka-rest.properties
+
+    # 사전준비 단계에서 기록한 값들 입력
+    zookeeper.connect= ZooKeeperConnectionString
+    bootstrap.servers= BootstrapBrokerString
+    ```
+
+5. API Gateway 생성
+
+아래 사진을 참고하여 생성
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c725975e-aa5e-4923-9192-62138fb846df/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c725975e-aa5e-4923-9192-62138fb846df/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4c57c630-01f3-4c54-ba53-9eb6977ba554/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4c57c630-01f3-4c54-ba53-9eb6977ba554/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b5878e89-5753-4c8f-b5e9-b30fa12953c9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b5878e89-5753-4c8f-b5e9-b30fa12953c9/Untitled.png)
+
+회색 부분은 client EC2 인스턴스의 public DNS
+
+6. 생성한 API를 배포 한 후 호출 URL 을 기록
+
+이것을 웹훅 발생 시 전송 URL로 사용
+
+### RESULT
+
+- postman을 사용하여 테스트(테스트 목적으로 짧은 메세지 POST)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a034a9c9-d7fe-415d-97ac-427e45e30ecf/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a034a9c9-d7fe-415d-97ac-427e45e30ecf/Untitled.png)
+
+- Kafka consumer에서 결과 확인
+
+    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/88543ac4-6eae-4ed7-948d-65687e79b95d/_2021-06-17__1.50.37.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/88543ac4-6eae-4ed7-948d-65687e79b95d/_2021-06-17__1.50.37.png)
+
+---
+
 ### 키네시스 프로듀서
 ```
 import json
