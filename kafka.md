@@ -1,3 +1,67 @@
+### 키네시스 프로듀서
+```
+import json
+import boto3
+
+client = boto3.client('kinesis')
+def lambda_handler(event, context):
+    # TODO implement
+    response = client.put_records(
+				#해당 데이터를 JSON 포맷으로 변환시켜 넣는다.
+        Records=[
+            {
+                'Data': json.dumps(event['resource']),
+                'ExplicitHashKey': '0',#임의의 해쉬값을 넣는다.
+                'PartitionKey': str(event['event_no'])
+            },
+        ],
+        StreamName='KinesisTutorialStream' #만든 Kinesis 스트림 이름을 넣는다
+    )
+    print(response)
+    return {
+        'statusCode': 200,
+        'body': response
+    }
+```
+### 키네시스 컨슈머
+```
+import json
+import boto3
+
+client = boto3.client('kinesis')
+def lambda_handler(event, context):
+    # TODO implement
+    response = client.list_shards(StreamName = 'KinesisTutorialStream')
+		#shard_id는 여기서 리스트 말고 특정 아이디로만 이용해서 데이터를 뽑는다.
+    shard_id = response['Shards'][0]['ShardId']
+    starting_seq_num = response['Shards'][0]['SequenceNumberRange']['StartingSequenceNumber']
+    #Record를 얻기 전 Shard Iterator 먼저 얻는다.
+    response = client.get_shard_iterator(
+        StreamName='KinesisTutorialStream',
+        ShardId = shard_id,
+        ShardIteratorType='AT_SEQUENCE_NUMBER',
+        StartingSequenceNumber=starting_seq_num
+    )
+    
+    response = client.get_records(ShardIterator=response['ShardIterator'])
+    
+    #원한 레코드 리스트를 얻은 후 이벤트만 뽑아서 프린트한다.
+    res=[]
+    
+    for data in response["Records"]:
+        if data is None:
+            break;
+        res.append(data['Data'].decode())
+
+    return {
+        'statusCode': 200,
+        'body': res
+    }
+```
+
+
+
+
 
 https://docs.aws.amazon.com/ko_kr/msk/latest/developerguide/create-vpc.html
 <br/>
