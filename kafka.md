@@ -10,7 +10,7 @@ API Gateway를 통해 해당 POST명령은 VPC내의 Kafka-REST client로 전송
 
 Kafka-REST client는 전송받은 메시지를 Kafka Cluster에 적재한다.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8528535e-ce13-4f2d-bdd1-5f477b6317b9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8528535e-ce13-4f2d-bdd1-5f477b6317b9/Untitled.png)
+![Untitled](https://user-images.githubusercontent.com/55729930/122361270-0de1aa80-cf92-11eb-84f5-13395716bc92.png)
 
 ### MSK 클러스터 생성
 
@@ -64,11 +64,11 @@ wget https://archive.apache.org/dist/kafka/2.6.1/kafka_2.13-2.6.1.tgz
 
 아래 사진을 참고하여 생성
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c725975e-aa5e-4923-9192-62138fb846df/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c725975e-aa5e-4923-9192-62138fb846df/Untitled.png)
+![Untitled (1)](https://user-images.githubusercontent.com/55729930/122361372-24880180-cf92-11eb-87aa-ea8a52eb876b.png)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4c57c630-01f3-4c54-ba53-9eb6977ba554/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4c57c630-01f3-4c54-ba53-9eb6977ba554/Untitled.png)
+![Untitled (2)](https://user-images.githubusercontent.com/55729930/122361380-2651c500-cf92-11eb-99a1-59c071563e64.png)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b5878e89-5753-4c8f-b5e9-b30fa12953c9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b5878e89-5753-4c8f-b5e9-b30fa12953c9/Untitled.png)
+![Untitled (3)](https://user-images.githubusercontent.com/55729930/122361388-28b41f00-cf92-11eb-9a83-c87e1f05a316.png)
 
 회색 부분은 client EC2 인스턴스의 public DNS
 
