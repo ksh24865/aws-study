@@ -1,4 +1,5 @@
 ```
+event_no 없애고 resource를 하나의 테이블로 만들어야 함
 CREATE EXTERNAL TABLE user_log (
   event_no int,
   resource struct<
@@ -39,6 +40,17 @@ CREATE EXTERNAL TABLE user_log (
 ROW FORMAT SERDE 'org.apache.hive.hcatalog.data.JsonSerDe'
 LOCATION 's3://laplace-test/log/'
 
-
+MSCK REPAIR TABLE cafe24_log;
 ALTER TABLE user_log ADD PARTITION (year = 년, month = 월, day = 일) LOCATION 's3://laplace-test/log/'
+
+
+CREATE EXTERNAL TABLE IF NOT EXISTS log_db.logs (
+  `event_no` int,
+  `resource` map<string,string> 
+)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+) LOCATION 's3://laplace-test/log/'
+TBLPROPERTIES ('has_encrypted_data'='false');
 ```
