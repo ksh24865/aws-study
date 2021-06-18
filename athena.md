@@ -38,4 +38,7 @@ CREATE EXTERNAL TABLE user_log (
 ) PARTITIONED BY (year int, month int, day int)
 ROW FORMAT SERDE 'org.apache.hive.hcatalog.data.JsonSerDe'
 LOCATION 's3://laplace-test/log/'
+
+
+ALTER TABLE user_log ADD PARTITION (year = 년, month = 월, day = 일) LOCATION 's3://laplace-test/log/'
 ```
