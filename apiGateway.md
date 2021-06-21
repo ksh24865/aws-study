@@ -47,16 +47,14 @@
 
         - 개발계인 beta API에 배포
 
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/db344aaf-3f46-456d-b2db-42edbfb2d66a/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/db344aaf-3f46-456d-b2db-42edbfb2d66a/Untitled.png)
+            ![Untitled (3)](https://user-images.githubusercontent.com/55729930/122768731-d9962300-d2de-11eb-9680-c1c45b49effe.png)
 
         - 개발계 API 테스트 완료
 
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b20a7937-3990-40b4-a3e6-51138b4302c5/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b20a7937-3990-40b4-a3e6-51138b4302c5/Untitled.png)
+           ![Untitled (4)](https://user-images.githubusercontent.com/55729930/122768733-da2eb980-d2de-11eb-89c3-705eee166e7b.png)
 
         - 이때 프로덕션 API 는 version 1인 lambda를 계속 바라보고 있어야 함
 
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1ca96602-9963-496f-8967-383fa5c836ae/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1ca96602-9963-496f-8967-383fa5c836ae/Untitled.png)
-
+            ![Untitled (5)](https://user-images.githubusercontent.com/55729930/122768724-d7cc5f80-d2de-11eb-8f24-6bf6b1dc171c.png)
         - 프로덕션인 v1 API에 배포 (lambda version 2가 연결됨)
-
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5d5d03a7-684b-432a-a944-220cd0c3ba31/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5d5d03a7-684b-432a-a944-220cd0c3ba31/Untitled.png)
+            ![Untitled (6)](https://user-images.githubusercontent.com/55729930/122768746-dc911380-d2de-11eb-9fab-dc096c1b5036.png)
