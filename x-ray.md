@@ -52,4 +52,4 @@ def lambda_handler(event, context):
 
 ![image](https://user-images.githubusercontent.com/55729930/122875865-cbdcae00-d36f-11eb-8ba7-e6e4da6be4c1.png)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5107f6f5-9428-4459-bd2f-88fba46807ab/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5107f6f5-9428-4459-bd2f-88fba46807ab/Untitled.png)
+![image](https://user-images.githubusercontent.com/55729930/122875991-ee6ec700-d36f-11eb-8051-5ca5be030c81.png)
