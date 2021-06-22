@@ -88,4 +88,41 @@ Kinesis Data Analytics 애플리케이션을 통해 Kinesis내의 데이터를 �
 
 - SQL 결과를 Lambda에 전송
     - S3로 저장하는데 이용 가능
-    - 인애플리케이션 스트림에 작성되는 모든 것을 Amazon Kinesis 데이터 스트림, Kinesis Data Firehose 전송 스트림 또는 AWS Lambda 함수와 같은 외부 대상에 전송할 수 있음
+	- 인애플리케이션 스트림에 작성되는 모든 것을 Amazon Kinesis 데이터 스트림, Kinesis Data Firehose 전송 스트림 또는 AWS Lambda 함수와 같은 외부 대상에 전송할 수 있음
+	- Ex) Kinesis의 data stream을 SQL쿼리하여 그 결과를 S3에 저장
+		- Lambda code
+
+		```python
+		import json
+		import datetime
+		import boto3 
+		def lambda_handler(event, context):
+			bucket = 'laplace-test'
+			file_name = str(datetime.datetime.now())[:-7]
+			result = upload_file_s3(bucket, 'log/' + file_name + '.json', event)
+
+			if result:
+				return {
+					'statusCode': 200,
+					'body': json.dumps("upload success")
+				}
+			else:
+				return {
+					'statusCode': 400,
+					'body': json.dumps("upload fail")
+				}
+
+		def upload_file_s3(bucket, file_name, file):
+			encode_file = bytes(json.dumps(file).encode('UTF-8'))
+			s3_resource = boto3.resource('s3')
+			try:
+				s3_resource.Object(bucket, file_name).put(Body=encode_file)
+				#s3.put_object(Bucket=bucket, Key=file_name, Body=encode_file)
+				return True
+			except:
+				return False
+		```
+
+		- result
+
+		![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9bcd93ac-8914-4d00-b3be-c58981b10e80/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9bcd93ac-8914-4d00-b3be-c58981b10e80/Untitled.png)
