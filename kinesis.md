@@ -124,5 +124,5 @@ Kinesis Data Analytics 애플리케이션을 통해 Kinesis내의 데이터를 �
 		```
 
 		- result
+		![image](https://user-images.githubusercontent.com/55729930/122875604-72747f00-d36f-11eb-9f46-be13f9e4d184.png)
 
-		![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9bcd93ac-8914-4d00-b3be-c58981b10e80/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9bcd93ac-8914-4d00-b3be-c58981b10e80/Untitled.png)
