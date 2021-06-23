@@ -125,4 +125,4 @@ Kinesis Data Analytics 애플리케이션을 통해 Kinesis내의 데이터를 �
 
 		- result
 		![image](https://user-images.githubusercontent.com/55729930/122875604-72747f00-d36f-11eb-9f46-be13f9e4d184.png)
-
+	- lambda 대신에 firehose를 이용해서도 s3에 저장 가능 (전처리는 불가능)
