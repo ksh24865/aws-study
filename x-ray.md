@@ -53,3 +53,14 @@ def lambda_handler(event, context):
 ![image](https://user-images.githubusercontent.com/55729930/122875865-cbdcae00-d36f-11eb-8ba7-e6e4da6be4c1.png)
 
 ![image](https://user-images.githubusercontent.com/55729930/122875991-ee6ec700-d36f-11eb-8051-5ca5be030c81.png)
+
+## CloudWatch
+
+총 요청, 지연 시간, 오류율 및 기간을 포함하여 기능에 대한 CloudWatch 메트릭 정보 제공
+![image](https://user-images.githubusercontent.com/55729930/123387333-a3082300-d5d2-11eb-9357-de07ab77eff7.png)
+
+### 결론
+
+X-Ray는 Lambda의 실행 루트를 추적하여 각 경로에서 소요된 시간과 에러 유무를 확인할 수 있고, CloudWatch는 Lambda의 요청횟수, 지연시간, 오류율 등의 통계지표를 확인할 수 있음.
+
+lambda를 디버깅하기 위해 사용한다면 lambda 실행 도중 어느 경로에서 에러가 발생하거나 실행 시간이 지연되는지 확인할 수 있는 X-Ray를 사용하는 것이 합리적이라고 생각함.
