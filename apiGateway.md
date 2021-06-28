@@ -2,7 +2,7 @@
 - lambda proxy integration 사용
 - python 3.8 사용
 - 프로덕션, 개발로 분리
-    - ~~/api/v1~~    /v1/api - 프로덕션
+    - ~~/api/v1~~    /v1/api - 프로덕션 
     - ~~/api/beta~~     /beta/api - 개발
     - 배포된 stage가 경로명으로 지정되어 api와 stage의 경로 위치를 교환함.
 - API Gateway 상에서 프로덕션 API, 개발 API 2개 생성
