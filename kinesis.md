@@ -85,44 +85,111 @@ Kinesis Data Analytics 애플리케이션을 통해 Kinesis내의 데이터를 �
 - 타 DB 및 app 연동 없이 Kinesis Data Analytics에 내장된 기능 만으로 수행 가능하다.
 
 ![Untitled (9)](https://user-images.githubusercontent.com/55729930/122769387-7bb60b00-d2df-11eb-9bf9-c28610565d5e.png)
+- Kinesis의 data stream을 SQL쿼리하여 그 결과를 S3에 저장
+    - 필요한 경우 해당 Lambda가 전처리 수행 가능
+        - 시간관련 데이터를 sql에서 timestamp로 읽을 수 있도록 전처리 필요해 보임
+    - case1: 저장 할 때 마다 해당 새로운 json파일 생성
+        - Lambda code
 
-- SQL 결과를 Lambda에 전송
-    - S3로 저장하는데 이용 가능
-	- 인애플리케이션 스트림에 작성되는 모든 것을 Amazon Kinesis 데이터 스트림, Kinesis Data Firehose 전송 스트림 또는 AWS Lambda 함수와 같은 외부 대상에 전송할 수 있음
-	- Ex) Kinesis의 data stream을 SQL쿼리하여 그 결과를 S3에 저장
-		- Lambda code
+        ```python
+        import json
+        import datetime
+        import boto3 
+        def lambda_handler(event, context):
+            bucket = 'laplace-test'
+            file_name = str(datetime.datetime.now())[:-7]
+            result = upload_file_s3(bucket, 'log/' + file_name + '.json', event)
 
-		```python
-		import json
-		import datetime
-		import boto3 
-		def lambda_handler(event, context):
-			bucket = 'laplace-test'
-			file_name = str(datetime.datetime.now())[:-7]
-			result = upload_file_s3(bucket, 'log/' + file_name + '.json', event)
+            if result:
+                return {
+                    'statusCode': 200,
+                    'body': json.dumps("upload success")
+                }
+            else:
+                return {
+                    'statusCode': 400,
+                    'body': json.dumps("upload fail")
+                }
 
-			if result:
-				return {
-					'statusCode': 200,
-					'body': json.dumps("upload success")
-				}
-			else:
-				return {
-					'statusCode': 400,
-					'body': json.dumps("upload fail")
-				}
+        def upload_file_s3(bucket, file_name, file):
+            encode_file = bytes(json.dumps(file).encode('UTF-8'))
+            s3_resource = boto3.resource('s3')
+            try:
+                s3_resource.Object(bucket, file_name).put(Body=encode_file)
+                #s3.put_object(Bucket=bucket, Key=file_name, Body=encode_file)
+                return True
+            except:
+                return False
+        ```
 
-		def upload_file_s3(bucket, file_name, file):
-			encode_file = bytes(json.dumps(file).encode('UTF-8'))
-			s3_resource = boto3.resource('s3')
-			try:
-				s3_resource.Object(bucket, file_name).put(Body=encode_file)
-				#s3.put_object(Bucket=bucket, Key=file_name, Body=encode_file)
-				return True
-			except:
-				return False
-		```
+    - S3에 저장된 logs
 
-		- result
-		![image](https://user-images.githubusercontent.com/55729930/122875604-72747f00-d36f-11eb-9f46-be13f9e4d184.png)
-	- lambda 대신에 firehose를 이용해서도 s3에 저장 가능 (전처리는 불가능)
+        ![image](https://user-images.githubusercontent.com/55729930/123809884-f1982300-d92c-11eb-87dd-d1c5d23a526e.png)
+
+    - Athena로 s3의 logs 쿼리
+
+        ```sql
+        SELECT * FROM "log_db"."logs" limit 5;
+        ```
+
+        ![image](https://user-images.githubusercontent.com/55729930/123809925-f8269a80-d92c-11eb-9675-46f73f4cfe15.png)
+    - case2: 한 시간 간격으로 새로운 파일 생성
+        - kinesis로 데이터 적재 시 해당 시간을 의미하는 json파일에 추가됨.
+        - Lambda code
+
+        ```python
+        import json
+        import datetime
+        import boto3 
+
+        client = boto3.client('kinesis')
+        s3 = boto3.client('s3')
+
+        def lambda_handler(event, context):
+            
+            bucket = 'laplace-test'
+            file_name = str(datetime.datetime.now())[:-13]+'.json'
+            print(file_name)
+            try:
+                obj = s3.get_object(Bucket= bucket, Key= 'log/' + file_name)
+            except:
+                obj = []
+            else:
+                obj = json.load(obj['Body'])
+            obj.append(event)
+            result = upload_file_s3(bucket, 'log/' + file_name, obj)
+            if result:
+                return {
+                    'statusCode': 200,
+                    'body': json.dumps("upload success")
+                }
+            else:
+                return {
+                    'statusCode': 400,
+                    'body': json.dumps("upload fail")
+                }
+
+        def upload_file_s3(bucket, file_name, file):
+            encode_file = bytes(json.dumps(file).encode('UTF-8'))
+            s3_resource = boto3.resource('s3')
+            try:
+                s3_resource.Object(bucket, file_name).put(Body=encode_file)
+                #s3.put_object(Bucket=bucket, Key=file_name, Body=encode_file)
+                return True
+            except:
+                return False
+        ```
+
+        - S3에 저장된  logs
+
+        ![image](https://user-images.githubusercontent.com/55729930/123809977-04125c80-d92d-11eb-938f-add7d15af2e7.png)
+
+        - Athena로 s3의 logs 쿼리
+
+        ```sql
+        SELECT * FROM "log_db"."logs2" limit 5;
+        ```
+
+        ![image](https://user-images.githubusercontent.com/55729930/123810037-0ffe1e80-d92d-11eb-8771-6263632e30c4.png)
+
+    - lambda 대신에 firehose를 이용해서도 s3에 저장 가능 (전처리는 불가능)
