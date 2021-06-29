@@ -3,7 +3,7 @@
 ### 1. lambda versioning
 
 `aws lambda update-function-code` 사용 시 자동으로 versioning
-
+ 
 ### 2. API 배포
 
 - api update 및 배포 cli 명령어를 이용하여 만든 실행 shell 파일을 git action에 추가
