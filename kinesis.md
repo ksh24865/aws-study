@@ -1,7 +1,7 @@
 ## Kinesis Producer
 
 - Cafe24에서 온 웹훅을 기준삼아서 레코드를 넣었다.
-
+ 
 ```python
 import json
 import boto3
