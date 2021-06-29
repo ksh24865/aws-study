@@ -21,15 +21,16 @@
 
         - 개발계인 beta API에 배포
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f02b4bda-f710-40ee-bad4-238b42165294/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f02b4bda-f710-40ee-bad4-238b42165294/Untitled.png)
+        ![image](https://user-images.githubusercontent.com/55729930/123807838-2d31ed80-d92b-11eb-93c4-eade4e73bd52.png)
 
         - 개발계 API 테스트 완료
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e74c787c-7cb3-47dd-bd40-32cd918663f3/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e74c787c-7cb3-47dd-bd40-32cd918663f3/Untitled.png)
+        ![image](https://user-images.githubusercontent.com/55729930/123807900-3a4edc80-d92b-11eb-913f-01fd6a48f294.png)
 
         - 프로덕션인 v1 API에 배포
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/97671a09-cd6c-49fb-be5b-25d00ab362ab/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/97671a09-cd6c-49fb-be5b-25d00ab362ab/Untitled.png)
+        ![image](https://user-images.githubusercontent.com/55729930/123807933-42a71780-d92b-11eb-9d5b-9e04cca606b1.png)
+
 
         - lambda를 업데이트하여 version 2 생성
 
@@ -45,19 +46,19 @@
 
         - 개발계인 beta API에 배포
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac25cf4e-15af-416d-98f7-136eecbeb128/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac25cf4e-15af-416d-98f7-136eecbeb128/Untitled.png)
+        ![image](https://user-images.githubusercontent.com/55729930/123807978-4cc91600-d92b-11eb-945c-34a70b8c9b5c.png)
 
         - 개발계 API 테스트 완료
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0e1f1c49-5dd1-4d5c-9292-ebca692e781c/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0e1f1c49-5dd1-4d5c-9292-ebca692e781c/Untitled.png)
+        ![image](https://user-images.githubusercontent.com/55729930/123808017-53f02400-d92b-11eb-89d4-fcdf1f78929a.png)
 
         - 이때 프로덕션 API 는 version 1인 lambda를 계속 바라보고 있어야 함
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/53f6961b-5f76-4b3e-ab2b-2a83e966575b/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/53f6961b-5f76-4b3e-ab2b-2a83e966575b/Untitled.png)
-
+        ![image](https://user-images.githubusercontent.com/55729930/123808068-62d6d680-d92b-11eb-83b6-2136a66d436c.png)
+        
         - 프로덕션인 v1 API에 배포 (lambda version 2가 연결됨)
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f0c35410-95cf-44a4-8dea-2de4b15287ab/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f0c35410-95cf-44a4-8dea-2de4b15287ab/Untitled.png)
+        ![image](https://user-images.githubusercontent.com/55729930/123808102-6bc7a800-d92b-11eb-9dcf-fcbb952d702c.png)
 
 - REST API
 - lambda proxy integration 사용
